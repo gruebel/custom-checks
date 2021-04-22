@@ -1,0 +1,34 @@
+metadata:
+  name: "Ensure Lambda function tagged with 'datadog: true' are also tagged with env, service and version"
+  id: "CKV2_DD_001"
+  category: "CONVENTION"
+definition:
+  or:
+    - cond_type: attribute
+      resource_types:
+        - aws_lambda_function
+      attribute: tags.datadog
+      operator: equals
+      value: "false"
+    - and:
+        - cond_type: attribute
+          resource_types:
+            - aws_lambda_function
+          attribute: tags.datadog
+          operator: equals
+          value: "true"
+        - cond_type: attribute
+          resource_types:
+            - aws_lambda_function
+          attribute: tags.env
+          operator: exists
+        - cond_type: attribute
+          resource_types:
+            - aws_lambda_function
+          attribute: tags.service
+          operator: exists
+        - cond_type: attribute
+          resource_types:
+            - aws_lambda_function
+          attribute: tags.version
+          operator: exists
